@@ -16,6 +16,7 @@ public class StudentsController : ControllerBase
         _studentService = studentService;
     }
 
+    /// <summary>Получить студентов по фильтрам</summary>
     [HttpPost("filter")]
     public async Task<ActionResult<StudentResult[]>> GetStudentsByFiltersAsync(
         StudentGroupFilter filter,
@@ -24,6 +25,7 @@ public class StudentsController : ControllerBase
         return Ok(await _studentService.GetStudentsByFiltersAsync(filter, cancellationToken));
     }
 
+    /// <summary>Добавить студента</summary>
     [HttpPost]
     public async Task<ActionResult> AddStudentAsync(
         CreateStudentRequest request,
@@ -33,6 +35,7 @@ public class StudentsController : ControllerBase
         return Ok(new { id });
     }
 
+    /// <summary>Изменить студента</summary>
     [HttpPut("{studentId:int}")]
     public async Task<ActionResult> UpdateStudentAsync(
         int studentId,
@@ -44,6 +47,7 @@ public class StudentsController : ControllerBase
             : NotFound();
     }
 
+    /// <summary>Пометить студента удалённым</summary>
     [HttpDelete("{studentId:int}")]
     public async Task<ActionResult> DeleteStudentAsync(
         int studentId,

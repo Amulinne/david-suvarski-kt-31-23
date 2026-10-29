@@ -16,6 +16,7 @@ public class GroupsController : ControllerBase
         _groupService = groupService;
     }
 
+    /// <summary>Получить группы по фильтрам</summary>
     [HttpPost("filter")]
     public async Task<ActionResult<GroupResult[]>> GetGroupsByFiltersAsync(
         GroupByFiltersFilter filter,
@@ -24,6 +25,7 @@ public class GroupsController : ControllerBase
         return Ok(await _groupService.GetGroupsByFiltersAsync(filter, cancellationToken));
     }
 
+    /// <summary>Добавить группу</summary>
     [HttpPost]
     public async Task<ActionResult> AddGroupAsync(
         CreateGroupRequest request,
@@ -33,6 +35,7 @@ public class GroupsController : ControllerBase
         return Ok(new { id });
     }
 
+    /// <summary>Изменить группу</summary>
     [HttpPut("{groupId:int}")]
     public async Task<ActionResult> UpdateGroupAsync(
         int groupId,
@@ -44,6 +47,7 @@ public class GroupsController : ControllerBase
             : NotFound();
     }
 
+    /// <summary>Пометить группу и её студентов удалёнными</summary>
     [HttpDelete("{groupId:int}")]
     public async Task<ActionResult> DeleteGroupAsync(
         int groupId,

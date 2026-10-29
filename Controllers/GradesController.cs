@@ -15,6 +15,7 @@ public class GradesController : ControllerBase
         _gradeService = gradeService;
     }
 
+    /// <summary>Получить средний балл по дисциплине в группе</summary>
     [HttpGet("average/discipline/{disciplineId:int}/group/{groupId:int}")]
     public async Task<ActionResult<AverageGradeResult>> GetAverageByDisciplineAndGroupAsync(
         int disciplineId,
@@ -25,6 +26,7 @@ public class GradesController : ControllerBase
             disciplineId, groupId, cancellationToken));
     }
 
+    /// <summary>Получить оценки студента</summary>
     [HttpGet("student/{studentId:int}")]
     public async Task<ActionResult<GradeResult[]>> GetStudentGradesAsync(
         int studentId,
@@ -33,6 +35,7 @@ public class GradesController : ControllerBase
         return Ok(await _gradeService.GetStudentGradesAsync(studentId, cancellationToken));
     }
 
+    /// <summary>Получить средний балл по курсу</summary>
     [HttpGet("average/course/{course:int}")]
     public async Task<ActionResult<AverageGradeResult>> GetAverageByCourseAsync(
         int course,
@@ -41,6 +44,7 @@ public class GradesController : ControllerBase
         return Ok(await _gradeService.GetAverageByCourseAsync(course, cancellationToken));
     }
 
+    /// <summary>Добавить оценку</summary>
     [HttpPost]
     public async Task<ActionResult> AddGradeAsync(
         CreateGradeRequest request,
@@ -50,6 +54,7 @@ public class GradesController : ControllerBase
         return Ok(new { id });
     }
 
+    /// <summary>Изменить оценку</summary>
     [HttpPut("{gradeId:int}")]
     public async Task<ActionResult> UpdateGradeAsync(
         int gradeId,

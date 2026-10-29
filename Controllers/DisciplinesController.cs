@@ -16,6 +16,7 @@ public class DisciplinesController : ControllerBase
         _disciplineService = disciplineService;
     }
 
+    /// <summary>Получить дисциплины по фильтрам</summary>
     [HttpPost("filter")]
     public async Task<ActionResult<DisciplineResult[]>> GetDisciplinesByFiltersAsync(
         DisciplineFilter filter,
@@ -24,6 +25,7 @@ public class DisciplinesController : ControllerBase
         return Ok(await _disciplineService.GetDisciplinesByFiltersAsync(filter, cancellationToken));
     }
 
+    /// <summary>Добавить дисциплину</summary>
     [HttpPost]
     public async Task<ActionResult> AddDisciplineAsync(
         CreateDisciplineRequest request,
@@ -33,6 +35,7 @@ public class DisciplinesController : ControllerBase
         return Ok(new { id });
     }
 
+    /// <summary>Изменить дисциплину</summary>
     [HttpPut("{disciplineId:int}")]
     public async Task<ActionResult> UpdateDisciplineAsync(
         int disciplineId,
@@ -44,6 +47,7 @@ public class DisciplinesController : ControllerBase
             : NotFound();
     }
 
+    /// <summary>Пометить дисциплину удалённой</summary>
     [HttpDelete("{disciplineId:int}")]
     public async Task<ActionResult> DeleteDisciplineAsync(
         int disciplineId,

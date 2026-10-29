@@ -15,6 +15,7 @@ public class CreditsController : ControllerBase
         _creditService = creditService;
     }
 
+    /// <summary>Получить зачёты студента</summary>
     [HttpGet("student/{studentId:int}")]
     public async Task<ActionResult<CreditResult[]>> GetStudentCreditsAsync(
         int studentId,
@@ -23,6 +24,7 @@ public class CreditsController : ControllerBase
         return Ok(await _creditService.GetStudentCreditsAsync(studentId, cancellationToken));
     }
 
+    /// <summary>Добавить зачёт</summary>
     [HttpPost]
     public async Task<ActionResult> AddCreditAsync(
         CreateCreditRequest request,
@@ -32,6 +34,7 @@ public class CreditsController : ControllerBase
         return Ok(new { id });
     }
 
+    /// <summary>Изменить результат зачёта</summary>
     [HttpPut("{creditId:int}")]
     public async Task<ActionResult> UpdateCreditAsync(
         int creditId,
