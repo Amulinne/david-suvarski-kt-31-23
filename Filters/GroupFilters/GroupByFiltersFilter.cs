@@ -1,4 +1,4 @@
-namespace david_suvarski_kt_31_23.Filters.GroupFilters.GroupByFiltersFilter;
+namespace david_suvarski_kt_31_23.Filters.GroupFilters;
 
 public class GroupByFiltersFilter
 {

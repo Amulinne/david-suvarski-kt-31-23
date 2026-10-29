@@ -28,6 +28,12 @@ public class DisciplineConfiguration : IEntityTypeConfiguration<Discipline>
             .HasMaxLength(100)
             .IsRequired();
 
+        builder.Property(discipline => discipline.IsHumanitarian)
+            .HasColumnName("c_discipline_is_humanitarian")
+            .HasColumnType(ColumnType.Bool)
+            .HasDefaultValue(false)
+            .IsRequired();
+
         builder.Property(discipline => discipline.IsDeleted)
             .HasColumnName("c_discipline_is_deleted")
             .HasColumnType(ColumnType.Bool)

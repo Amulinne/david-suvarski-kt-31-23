@@ -11,6 +11,7 @@ public class StudentDbContext : DbContext
     public DbSet<Student> Students { get; set; }
     public DbSet<Discipline> Disciplines { get; set; }
     public DbSet<Grade> Grades { get; set; }
+    public DbSet<Credit> Credits { get; set; }
 
     public StudentDbContext(DbContextOptions<StudentDbContext> options) : base(options)
     {
@@ -23,5 +24,6 @@ public class StudentDbContext : DbContext
         modelBuilder.ApplyConfiguration(new StudentConfiguration());
         modelBuilder.ApplyConfiguration(new DisciplineConfiguration());
         modelBuilder.ApplyConfiguration(new GradeConfiguration());
+        modelBuilder.ApplyConfiguration(new CreditConfiguration());
     }
 }

@@ -21,6 +21,39 @@ namespace david_suvarski_kt_31_23.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("david_suvarski_kt_31_23.Models.Credit", b =>
+                {
+                    b.Property<int>("CreditId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int4")
+                        .HasColumnName("c_credit_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CreditId"));
+
+                    b.Property<int>("DisciplineId")
+                        .HasColumnType("int4")
+                        .HasColumnName("f_discipline_id");
+
+                    b.Property<bool>("IsPassed")
+                        .HasColumnType("bool")
+                        .HasColumnName("c_credit_is_passed");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int4")
+                        .HasColumnName("f_student_id");
+
+                    b.HasKey("CreditId")
+                        .HasName("pk_cd_credit_credit_id");
+
+                    b.HasIndex("DisciplineId")
+                        .HasDatabaseName("idx_cd_credit_f_discipline_id");
+
+                    b.HasIndex("StudentId")
+                        .HasDatabaseName("idx_cd_credit_f_student_id");
+
+                    b.ToTable("cd_credit", (string)null);
+                });
+
             modelBuilder.Entity("david_suvarski_kt_31_23.Models.Discipline", b =>
                 {
                     b.Property<int>("DisciplineId")
@@ -35,6 +68,12 @@ namespace david_suvarski_kt_31_23.Migrations
                         .HasColumnType("bool")
                         .HasDefaultValue(false)
                         .HasColumnName("c_discipline_is_deleted");
+
+                    b.Property<bool>("IsHumanitarian")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bool")
+                        .HasDefaultValue(false)
+                        .HasColumnName("c_discipline_is_humanitarian");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -186,6 +225,27 @@ namespace david_suvarski_kt_31_23.Migrations
                     b.ToTable("cd_student", (string)null);
                 });
 
+            modelBuilder.Entity("david_suvarski_kt_31_23.Models.Credit", b =>
+                {
+                    b.HasOne("david_suvarski_kt_31_23.Models.Discipline", "Discipline")
+                        .WithMany("Credits")
+                        .HasForeignKey("DisciplineId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_credit_discipline_id");
+
+                    b.HasOne("david_suvarski_kt_31_23.Models.Student", "Student")
+                        .WithMany("Credits")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_credit_student_id");
+
+                    b.Navigation("Discipline");
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("david_suvarski_kt_31_23.Models.Grade", b =>
                 {
                     b.HasOne("david_suvarski_kt_31_23.Models.Discipline", "Discipline")
@@ -233,6 +293,8 @@ namespace david_suvarski_kt_31_23.Migrations
 
             modelBuilder.Entity("david_suvarski_kt_31_23.Models.Discipline", b =>
                 {
+                    b.Navigation("Credits");
+
                     b.Navigation("Grades");
                 });
 
@@ -248,6 +310,8 @@ namespace david_suvarski_kt_31_23.Migrations
 
             modelBuilder.Entity("david_suvarski_kt_31_23.Models.Student", b =>
                 {
+                    b.Navigation("Credits");
+
                     b.Navigation("Grades");
                 });
 #pragma warning restore 612, 618

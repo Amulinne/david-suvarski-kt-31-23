@@ -54,3 +54,63 @@ finally
 {
     LogManager.Shutdown();
 }
+
+/*
+1. Создать интерфейс, например:
+public interface IGroupService
+{
+    Task<Group[]> GetGroupsAsync(
+        CancellationToken cancellationToken = default);
+}
+2. Создать класс сервиса:
+public class GroupService : IGroupService
+{
+    private readonly StudentDbContext _dbContext;
+
+    public GroupService(StudentDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+
+    public async Task<Group[]> GetGroupsAsync(
+        CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.Groups.ToArrayAsync(cancellationToken);
+    }
+}
+3. Зарегистрировать сервис в AddServices():
+services.AddScoped<IGroupService, GroupService>();
+4. Подключить сервис к контроллеру:
+private readonly IGroupService _groupService;
+
+public GroupsController(IGroupService groupService)
+{
+    _groupService = groupService;
+}
+И вызвать его внутри метода контроллера:
+[HttpGet]
+public async Task<ActionResult> GetGroupsAsync(
+    CancellationToken cancellationToken)
+{
+    var groups = await _groupService.GetGroupsAsync(cancellationToken);
+
+    return Ok(groups);
+}
+Как проверить
+В терминале перейди в проект:
+cd "/Users/amulinne/Documents/Учебная/ПП/david-suvarski-kt-31-23"
+Проверь сборку:
+dotnet build
+Запусти приложение:
+dotnet run
+Этот терминал оставь работающим. Должна появиться строка:
+Now listening on: http://localhost:5289
+Открой Swagger:
+http://localhost:5289/swagger/index.html
+Дальше:
+1. Раскрой нужный метод.
+2. Нажми Try it out.
+3. Заполни параметры.
+4. Нажми Execute.
+5. Ответ смотри в Response body.
+*/

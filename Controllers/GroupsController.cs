@@ -1,5 +1,5 @@
-using david_suvarski_kt_31_23.Filters.GroupFilters.GroupByFiltersFilter;
-using david_suvarski_kt_31_23.Interfaces.StudentsInterfaces;
+using david_suvarski_kt_31_23.Contracts;
+using david_suvarski_kt_31_23.Filters.GroupFilters;
 using david_suvarski_kt_31_23.Interfaces.GroupsInterfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,15 +16,41 @@ public class GroupsController : ControllerBase
         _groupService = groupService;
     }
 
-    [HttpPost]
-    public async Task<ActionResult> GetGroupsByFiltersAsync(
+    [HttpPost("filter")]
+    public async Task<ActionResult<GroupResult[]>> GetGroupsByFiltersAsync(
         GroupByFiltersFilter filter,
         CancellationToken cancellationToken = default)
     {
-        var groups = await _groupService.GetGroupsByFiltersAsync(
-            filter,
-            cancellationToken);
+        return Ok(await _groupService.GetGroupsByFiltersAsync(filter, cancellationToken));
+    }
 
-        return Ok(groups);
+    [HttpPost]
+    public async Task<ActionResult> AddGroupAsync(
+        CreateGroupRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var id = await _groupService.AddGroupAsync(request, cancellationToken);
+        return Ok(new { id });
+    }
+
+    [HttpPut("{groupId:int}")]
+    public async Task<ActionResult> UpdateGroupAsync(
+        int groupId,
+        UpdateGroupRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        return await _groupService.UpdateGroupAsync(groupId, request, cancellationToken)
+            ? NoContent()
+            : NotFound();
+    }
+
+    [HttpDelete("{groupId:int}")]
+    public async Task<ActionResult> DeleteGroupAsync(
+        int groupId,
+        CancellationToken cancellationToken = default)
+    {
+        return await _groupService.DeleteGroupAsync(groupId, cancellationToken)
+            ? NoContent()
+            : NotFound();
     }
 }

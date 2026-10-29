@@ -1,4 +1,5 @@
-using david_suvarski_kt_31_23.Filters.StudentFilters.StudentGroupFilter;
+using david_suvarski_kt_31_23.Contracts;
+using david_suvarski_kt_31_23.Filters.StudentFilters;
 using david_suvarski_kt_31_23.Interfaces.StudentsInterfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,15 +16,41 @@ public class StudentsController : ControllerBase
         _studentService = studentService;
     }
 
-    [HttpPost(Name = "GetStudentsByGroup")]
-    public async Task<ActionResult> GetStudentsByGroupAsync(
+    [HttpPost("filter")]
+    public async Task<ActionResult<StudentResult[]>> GetStudentsByFiltersAsync(
         StudentGroupFilter filter,
         CancellationToken cancellationToken = default)
     {
-        var students = await _studentService.GetStudentsByGroupAsync(
-            filter,
-            cancellationToken);
+        return Ok(await _studentService.GetStudentsByFiltersAsync(filter, cancellationToken));
+    }
 
-        return Ok(students);
+    [HttpPost]
+    public async Task<ActionResult> AddStudentAsync(
+        CreateStudentRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var id = await _studentService.AddStudentAsync(request, cancellationToken);
+        return Ok(new { id });
+    }
+
+    [HttpPut("{studentId:int}")]
+    public async Task<ActionResult> UpdateStudentAsync(
+        int studentId,
+        UpdateStudentRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        return await _studentService.UpdateStudentAsync(studentId, request, cancellationToken)
+            ? NoContent()
+            : NotFound();
+    }
+
+    [HttpDelete("{studentId:int}")]
+    public async Task<ActionResult> DeleteStudentAsync(
+        int studentId,
+        CancellationToken cancellationToken = default)
+    {
+        return await _studentService.DeleteStudentAsync(studentId, cancellationToken)
+            ? NoContent()
+            : NotFound();
     }
 }

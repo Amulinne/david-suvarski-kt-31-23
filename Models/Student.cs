@@ -10,4 +10,5 @@ public class Student
 
     public Group Group { get; set; } = null!;
     public ICollection<Grade> Grades { get; set; } = new List<Grade>();
+    public ICollection<Credit> Credits { get; set; } = new List<Credit>();
 }
